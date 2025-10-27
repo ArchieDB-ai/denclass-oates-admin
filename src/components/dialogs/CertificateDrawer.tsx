@@ -7,6 +7,8 @@ import {
   Stack,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { format } from 'date-fns';
 import { useState } from 'react';
@@ -34,6 +36,8 @@ const formatDisplayDate = (value?: string) => {
 };
 
 const CertificateDrawer = ({ certificate, open, onClose }: CertificateDrawerProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const approveCertificate = useAppStore((state) => state.approveCertificate);
   const rejectCertificate = useAppStore((state) => state.rejectCertificate);
   const updateCertificateStatus = useAppStore(
@@ -74,8 +78,18 @@ const CertificateDrawer = ({ certificate, open, onClose }: CertificateDrawerProp
   const isActionable = ['pending', 'updated', 'expired'].includes(certificate.status);
 
   return (
-    <Drawer anchor="right" open={open} onClose={onClose} PaperProps={{ sx: { width: 420 } }}>
-      <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <Drawer
+      anchor="right"
+      open={open}
+      onClose={onClose}
+      PaperProps={{
+        sx: {
+          width: { xs: '100%', sm: 480, md: 520 },
+          maxWidth: '100vw',
+        },
+      }}
+    >
+      <Box sx={{ p: { xs: 2, sm: 3 }, display: 'flex', flexDirection: 'column', height: '100%' }}>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
           <Box>
             <Typography variant="h6" fontWeight={700}>
@@ -157,19 +171,38 @@ const CertificateDrawer = ({ certificate, open, onClose }: CertificateDrawerProp
         </Stack>
 
         {isActionable ? (
-          <Stack direction="row" spacing={1.5} sx={{ mt: 2 }}>
-            <Button variant="outlined" color="secondary" onClick={handleSetUpdated}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={1.5}
+            sx={{ mt: 2 }}
+          >
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={handleSetUpdated}
+              fullWidth={isMobile}
+            >
               Mark updated
             </Button>
-            <Button variant="contained" color="success" onClick={handleApprove}>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={handleApprove}
+              fullWidth={isMobile}
+            >
               Approve &amp; Reinstate
             </Button>
-            <Button variant="outlined" color="warning" onClick={handleReject}>
+            <Button
+              variant="outlined"
+              color="warning"
+              onClick={handleReject}
+              fullWidth={isMobile}
+            >
               Reject
             </Button>
           </Stack>
         ) : (
-          <Button sx={{ mt: 2 }} variant="outlined" onClick={onClose}>
+          <Button sx={{ mt: 2 }} variant="outlined" onClick={onClose} fullWidth={isMobile}>
             Close
           </Button>
         )}

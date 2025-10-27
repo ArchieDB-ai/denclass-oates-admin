@@ -13,6 +13,8 @@ import {
   Stack,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
@@ -43,6 +45,8 @@ const formatDisplayDate = (value?: string) => {
 };
 
 const TreatmentPlanDrawer = ({ plan, open, onClose }: TreatmentPlanDrawerProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [notes, setNotes] = useState('');
   const markTreatmentPlanReviewed = useAppStore(
     (state) => state.markTreatmentPlanReviewed,
@@ -61,8 +65,18 @@ const TreatmentPlanDrawer = ({ plan, open, onClose }: TreatmentPlanDrawerProps) 
   const showRiskAlert = Boolean(plan.previousCategory && plan.previousCategory !== plan.currentCategory);
 
   return (
-    <Drawer anchor="right" open={open} onClose={onClose} PaperProps={{ sx: { width: 520 } }}>
-      <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <Drawer
+      anchor="right"
+      open={open}
+      onClose={onClose}
+      PaperProps={{
+        sx: {
+          width: { xs: '100%', sm: 560, md: 640 },
+          maxWidth: '100vw',
+        },
+      }}
+    >
+      <Box sx={{ p: { xs: 2, sm: 3 }, display: 'flex', flexDirection: 'column', height: '100%' }}>
         <Stack direction="row" justifyContent="space-between" spacing={2}>
           <Box>
             <Typography variant="h6" fontWeight={700}>
@@ -79,11 +93,11 @@ const TreatmentPlanDrawer = ({ plan, open, onClose }: TreatmentPlanDrawerProps) 
 
         <Stack spacing={2} sx={{ flexGrow: 1, overflowY: 'auto' }}>
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <Typography variant="overline" color="text.secondary">
                 Current category
               </Typography>
-              <Stack direction="row" spacing={1} alignItems="center">
+              <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
                 <Chip color="primary" label={`DRC ${plan.currentCategory}`} />
                 {plan.requiresReapproval ? (
                   <Chip
@@ -95,7 +109,7 @@ const TreatmentPlanDrawer = ({ plan, open, onClose }: TreatmentPlanDrawerProps) 
                 ) : null}
               </Stack>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <Typography variant="overline" color="text.secondary">
                 Previous category
               </Typography>
@@ -106,13 +120,13 @@ const TreatmentPlanDrawer = ({ plan, open, onClose }: TreatmentPlanDrawerProps) 
           </Grid>
 
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <Typography variant="overline" color="text.secondary">
                 Provider
               </Typography>
               <Typography variant="body1">{plan.provider}</Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <Typography variant="overline" color="text.secondary">
                 Original approver
               </Typography>
@@ -123,13 +137,13 @@ const TreatmentPlanDrawer = ({ plan, open, onClose }: TreatmentPlanDrawerProps) 
           </Grid>
 
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <Typography variant="overline" color="text.secondary">
                 Submitted
               </Typography>
               <Typography variant="body2">{formatDisplayDate(plan.submittedAt)}</Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <Typography variant="overline" color="text.secondary">
                 Last updated
               </Typography>
@@ -221,11 +235,25 @@ const TreatmentPlanDrawer = ({ plan, open, onClose }: TreatmentPlanDrawerProps) 
           />
         </Stack>
 
-        <Stack direction="row" spacing={1.5} sx={{ mt: 3 }}>
-          <Button variant="outlined" color="secondary" onClick={() => handleDecision('returned')}>
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={1.5}
+          sx={{ mt: 3 }}
+        >
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => handleDecision('returned')}
+            fullWidth={isMobile}
+          >
             Return for edits
           </Button>
-          <Button variant="contained" color="success" onClick={() => handleDecision('approved')}>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => handleDecision('approved')}
+            fullWidth={isMobile}
+          >
             Approve 3C Plan
           </Button>
         </Stack>

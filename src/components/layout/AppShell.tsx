@@ -29,7 +29,8 @@ import type { PropsWithChildren } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../store/appStore';
 
-const drawerWidth = 280;
+const drawerWidthDesktop = 280;
+const drawerWidthTablet = 240;
 
 const navItems = [
   {
@@ -204,7 +205,7 @@ const AppShell = ({ children }: PropsWithChildren) => {
         sx={{
           borderBottom: '1px solid',
           borderColor: 'divider',
-          ml: { md: `${drawerWidth}px` },
+          ml: { md: `${drawerWidthTablet}px`, lg: `${drawerWidthDesktop}px` },
         }}
       >
         <Toolbar sx={{ gap: 2 }}>
@@ -224,17 +225,20 @@ const AppShell = ({ children }: PropsWithChildren) => {
             icon={<NotificationsActiveIcon />}
             label={`${metrics.pendingRegistrations} pending registrations`}
             variant="outlined"
+            sx={{ display: { xs: 'none', md: 'flex' } }}
           />
           <Chip
             color={metrics.highRiskAlerts > 0 ? 'warning' : 'default'}
             label={`${metrics.highRiskAlerts} risk alerts`}
             variant={metrics.highRiskAlerts > 0 ? 'filled' : 'outlined'}
+            sx={{ display: { xs: 'none', sm: 'flex' } }}
           />
           <IconButton color="inherit">
             <Badge
               color="error"
-              badgeContent={metrics.updatedCertificates}
+              badgeContent={metrics.updatedCertificates + metrics.pendingRegistrations}
               overlap="circular"
+              max={99}
             >
               <Avatar sx={{ bgcolor: 'primary.main' }}>CO</Avatar>
             </Badge>
@@ -242,7 +246,13 @@ const AppShell = ({ children }: PropsWithChildren) => {
         </Toolbar>
       </AppBar>
 
-      <Box component="nav" sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}>
+      <Box
+        component="nav"
+        sx={{
+          width: { md: drawerWidthTablet, lg: drawerWidthDesktop },
+          flexShrink: { md: 0 },
+        }}
+      >
         <Drawer
           variant="temporary"
           open={drawerOpen}
@@ -253,7 +263,7 @@ const AppShell = ({ children }: PropsWithChildren) => {
           sx={{
             display: { xs: 'block', md: 'none' },
             '& .MuiDrawer-paper': {
-              width: drawerWidth,
+              width: drawerWidthDesktop,
               boxSizing: 'border-box',
             },
           }}
@@ -265,7 +275,7 @@ const AppShell = ({ children }: PropsWithChildren) => {
           sx={{
             display: { xs: 'none', md: 'block' },
             '& .MuiDrawer-paper': {
-              width: drawerWidth,
+              width: { md: drawerWidthTablet, lg: drawerWidthDesktop },
               boxSizing: 'border-box',
             },
           }}
@@ -279,9 +289,12 @@ const AppShell = ({ children }: PropsWithChildren) => {
         component="main"
         sx={{
           flexGrow: 1,
-          p: { xs: 2, md: 4 },
+          p: { xs: 2, sm: 3, md: 4 },
           mt: 8,
-          width: { md: `calc(100% - ${drawerWidth}px)` },
+          width: {
+            md: `calc(100% - ${drawerWidthTablet}px)`,
+            lg: `calc(100% - ${drawerWidthDesktop}px)`,
+          },
           backgroundColor: 'background.default',
         }}
       >

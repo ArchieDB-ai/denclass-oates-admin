@@ -46,12 +46,13 @@ const formatDateTime = (value?: string) => {
 };
 
 const certificateColumns: GridColDef<CertificateRecord>[] = [
-  { field: 'userName', headerName: 'User', flex: 1, minWidth: 180 },
+  { field: 'userName', headerName: 'User', flex: 1, minWidth: 150 },
   {
     field: 'roleRequested',
     headerName: 'Role requested',
     flex: 1,
-    minWidth: 200,
+    minWidth: 180,
+    hideable: true,
   },
   {
     field: 'status',
@@ -69,29 +70,31 @@ const certificateColumns: GridColDef<CertificateRecord>[] = [
 ];
 
 const treatmentPlanColumns: GridColDef<TreatmentPlanRecord>[] = [
-  { field: 'soldierName', headerName: 'Soldier', flex: 1, minWidth: 180 },
+  { field: 'soldierName', headerName: 'Soldier', flex: 1, minWidth: 150 },
   {
     field: 'currentCategory',
     headerName: 'Category',
-    width: 120,
+    width: 100,
     valueFormatter: ({ value }) => `DRC ${value as string}`,
   },
   {
     field: 'previousCategory',
     headerName: 'Previous',
-    width: 120,
+    width: 100,
+    hideable: true,
     valueFormatter: ({ value }) => (value ? `DRC ${value as string}` : '—'),
   },
   {
     field: 'status',
     headerName: 'Status',
-    width: 150,
+    width: 140,
     renderCell: ({ value }) => <StatusChip value={value} kind="treatment" />,
   },
   {
     field: 'lastUpdatedAt',
     headerName: 'Modified',
-    width: 150,
+    width: 130,
+    hideable: true,
     valueFormatter: ({ value }) =>
       formatDate(typeof value === 'string' ? value : undefined),
   },
@@ -134,7 +137,7 @@ const Dashboard = () => {
       </Box>
 
       <Grid container spacing={3}>
-        <Grid item xs={12} md={4} lg={3}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
           <QueueCard
             title="Pending registrations"
             count={metrics.pending.length}
@@ -143,7 +146,7 @@ const Dashboard = () => {
             icon={<PendingActionsIcon fontSize="large" color="primary" />}
           />
         </Grid>
-        <Grid item xs={12} md={4} lg={3}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
           <QueueCard
             title="Updated certificates"
             count={metrics.updated.length}
@@ -153,7 +156,7 @@ const Dashboard = () => {
             icon={<AssignmentIcon fontSize="large" color="success" />}
           />
         </Grid>
-        <Grid item xs={12} md={4} lg={3}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
           <QueueCard
             title="Expired certificates"
             count={metrics.expired.length}
@@ -163,7 +166,7 @@ const Dashboard = () => {
             icon={<ReportProblemIcon fontSize="large" color="warning" />}
           />
         </Grid>
-        <Grid item xs={12} md={6} lg={3}>
+        <Grid item xs={12} sm={6} md={12} lg={3}>
           <QueueCard
             title="3C treatment plans"
             count={metrics.awaitingPlans.length}

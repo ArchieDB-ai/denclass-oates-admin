@@ -33,31 +33,33 @@ const formatDate = (value?: string, pattern = 'dd MMM yyyy') => {
 };
 
 const columns: GridColDef<TreatmentPlanRecord>[] = [
-  { field: 'id', headerName: 'Plan ID', width: 120 },
-  { field: 'soldierName', headerName: 'Soldier', flex: 1.1, minWidth: 180 },
-  { field: 'unit', headerName: 'Unit', flex: 1, minWidth: 160 },
+  { field: 'id', headerName: 'Plan ID', width: 110, hideable: true },
+  { field: 'soldierName', headerName: 'Soldier', flex: 1.1, minWidth: 150 },
+  { field: 'unit', headerName: 'Unit', flex: 1, minWidth: 120, hideable: true },
   {
     field: 'currentCategory',
     headerName: 'Current',
-    width: 120,
+    width: 100,
     valueFormatter: ({ value }) => `DRC ${value as string}`,
   },
   {
     field: 'previousCategory',
     headerName: 'Previous',
-    width: 120,
+    width: 100,
+    hideable: true,
     valueFormatter: ({ value }) => (value ? `DRC ${value as string}` : '—'),
   },
   {
     field: 'status',
     headerName: 'Status',
-    width: 160,
+    width: 150,
     renderCell: ({ value }) => <StatusChip value={value} kind="treatment" />,
   },
   {
     field: 'lastUpdatedAt',
     headerName: 'Modified',
-    width: 150,
+    width: 130,
+    hideable: true,
     valueFormatter: ({ value }) =>
       formatDate(typeof value === 'string' ? value : undefined),
   },
@@ -107,38 +109,38 @@ const TreatmentPlans = () => {
       </Box>
 
       <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <Card>
-            <CardContent>
+            <CardContent sx={{ py: { xs: 1.5, sm: 2 } }}>
               <Typography variant="h3" fontWeight={700}>
                 {metrics.requiresReapproval.length}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
                 Plans awaiting senior approval
               </Typography>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <Card>
-            <CardContent sx={{ display: 'flex', gap: 2 }}>
-              <WarningAmberIcon color="warning" />
+            <CardContent sx={{ display: 'flex', gap: 2, py: { xs: 1.5, sm: 2 } }}>
+              <WarningAmberIcon color="warning" sx={{ fontSize: { xs: '2rem', sm: '2.5rem' } }} />
               <Box>
                 <Typography variant="h6">{metrics.escalated.length}</Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
                   Category escalations (3A/3B → 3C)
                 </Typography>
               </Box>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} sm={12} md={4}>
           <Card>
-            <CardContent sx={{ display: 'flex', gap: 2 }}>
-              <HistoryToggleOffIcon color="info" />
+            <CardContent sx={{ display: 'flex', gap: 2, py: { xs: 1.5, sm: 2 } }}>
+              <HistoryToggleOffIcon color="info" sx={{ fontSize: { xs: '2rem', sm: '2.5rem' } }} />
               <Box>
                 <Typography variant="h6">{metrics.billingRisk.length}</Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
                   Plans needing billing reconciliation review
                 </Typography>
               </Box>
@@ -165,14 +167,30 @@ const TreatmentPlans = () => {
                 }
               }}
               size="small"
+              sx={{
+                flexWrap: 'wrap',
+                '& .MuiToggleButton-root': {
+                  px: { xs: 1.5, sm: 2 },
+                  py: { xs: 0.5, sm: 1 },
+                },
+              }}
             >
               <ToggleButton value="requiresReapproval">
-                <FilterAltIcon fontSize="small" sx={{ mr: 1 }} /> Needs approval
+                <FilterAltIcon fontSize="small" sx={{ mr: { xs: 0.5, sm: 1 } }} />
+                <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                  Needs approval
+                </Box>
+                <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
+                  Needs
+                </Box>
               </ToggleButton>
               <ToggleButton value="categoryEscalation">
-                <WarningAmberIcon fontSize="small" sx={{ mr: 1 }} /> Escalated
+                <WarningAmberIcon fontSize="small" sx={{ mr: { xs: 0.5, sm: 1 } }} />
+                <Box component="span">Escalated</Box>
               </ToggleButton>
-              <ToggleButton value="all">Show all</ToggleButton>
+              <ToggleButton value="all">
+                <Box component="span">Show all</Box>
+              </ToggleButton>
             </ToggleButtonGroup>
             <Typography variant="body2" color="text.secondary">
               Click a plan to view its full modification history.

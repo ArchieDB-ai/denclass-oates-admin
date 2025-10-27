@@ -25,10 +25,34 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: "'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif",
-    h1: { fontSize: '2rem', fontWeight: 700 },
-    h2: { fontSize: '1.6rem', fontWeight: 600 },
-    h3: { fontSize: '1.4rem', fontWeight: 600 },
-    h4: { fontSize: '1.2rem', fontWeight: 600 },
+    h1: {
+      fontSize: '2rem',
+      fontWeight: 700,
+      '@media (max-width:600px)': {
+        fontSize: '1.75rem',
+      },
+    },
+    h2: {
+      fontSize: '1.6rem',
+      fontWeight: 600,
+      '@media (max-width:600px)': {
+        fontSize: '1.4rem',
+      },
+    },
+    h3: {
+      fontSize: '1.4rem',
+      fontWeight: 600,
+      '@media (max-width:600px)': {
+        fontSize: '1.25rem',
+      },
+    },
+    h4: {
+      fontSize: '1.2rem',
+      fontWeight: 600,
+      '@media (max-width:600px)': {
+        fontSize: '1.1rem',
+      },
+    },
     body1: { fontSize: '0.95rem' },
     button: { textTransform: 'none', fontWeight: 600 },
   },

@@ -36,28 +36,41 @@ const formatDate = (value?: string, pattern = 'dd MMM yyyy') => {
 };
 
 const columns: GridColDef<CertificateRecord>[] = [
-  { field: 'userName', headerName: 'User', flex: 1.2, minWidth: 180 },
-  { field: 'unit', headerName: 'Unit', flex: 1, minWidth: 160 },
-  { field: 'roleRequested', headerName: 'Role requested', flex: 1.4, minWidth: 220 },
+  { field: 'userName', headerName: 'User', flex: 1.2, minWidth: 150 },
+  {
+    field: 'unit',
+    headerName: 'Unit',
+    flex: 1,
+    minWidth: 120,
+    hideable: true,
+  },
+  {
+    field: 'roleRequested',
+    headerName: 'Role requested',
+    flex: 1.4,
+    minWidth: 180,
+    hideable: true,
+  },
   {
     field: 'status',
     headerName: 'Status',
-    width: 130,
+    width: 120,
     renderCell: ({ value }) => <StatusChip value={value} kind="certificate" />,
   },
   {
     field: 'expiresAt',
     headerName: 'Expires',
-    width: 150,
+    width: 130,
     valueFormatter: ({ value }) =>
       formatDate(typeof value === 'string' ? value : undefined),
   },
   {
     field: 'ocrConfidence',
-    headerName: 'OCR confidence',
-    width: 140,
+    headerName: 'OCR',
+    width: 100,
+    hideable: true,
     valueFormatter: ({ value }) =>
-      value === undefined ? 'Manual review' : `${Math.round((value as number) * 100)}%`,
+      value === undefined ? 'Manual' : `${Math.round((value as number) * 100)}%`,
   },
 ];
 
@@ -114,41 +127,41 @@ const CertificateCenter = () => {
       </Box>
 
       <Grid container spacing={2}>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={6} sm={6} md={3}>
           <Card>
-            <CardContent>
+            <CardContent sx={{ py: { xs: 1.5, sm: 2 } }}>
               <Typography variant="h6">{metrics.pending}</Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
                 Pending registration approvals
               </Typography>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={6} sm={6} md={3}>
           <Card>
-            <CardContent>
+            <CardContent sx={{ py: { xs: 1.5, sm: 2 } }}>
               <Typography variant="h6">{metrics.updated}</Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
                 Updated certificates awaiting reinstatement
               </Typography>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={6} sm={6} md={3}>
           <Card>
-            <CardContent>
+            <CardContent sx={{ py: { xs: 1.5, sm: 2 } }}>
               <Typography variant="h6">{metrics.expired}</Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
                 Expired / disallowed users
               </Typography>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={6} sm={6} md={3}>
           <Card>
-            <CardContent>
+            <CardContent sx={{ py: { xs: 1.5, sm: 2 } }}>
               <Typography variant="h6">{metrics.approved}</Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
                 Active validated users
               </Typography>
             </CardContent>

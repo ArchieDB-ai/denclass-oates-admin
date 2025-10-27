@@ -42,8 +42,13 @@ const QueueCard = ({
     }}
   >
     <CardContent>
-      <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
-        <Stack spacing={1}>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        justifyContent="space-between"
+        alignItems={{ xs: 'center', sm: 'flex-start' }}
+        spacing={2}
+      >
+        <Stack spacing={1} sx={{ textAlign: { xs: 'center', sm: 'left' }, flex: 1 }}>
           <Typography variant="overline" color="text.secondary">
             {title}
           </Typography>
@@ -54,7 +59,7 @@ const QueueCard = ({
             {description}
           </Typography>
         </Stack>
-        <Stack spacing={1} alignItems="flex-end">
+        <Stack spacing={1} alignItems={{ xs: 'center', sm: 'flex-end' }}>
           {chipLabel ? (
             <Chip
               label={chipLabel}
